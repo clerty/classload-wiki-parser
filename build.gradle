@@ -1,0 +1,61 @@
+ext {
+    fingBugsVersion = "3.0.2"
+    gsonVersion = "2.8.6"
+    guavaVersion = "29.0-jre"
+    xwikiVersion = "13.2"
+    xwikiMediaWikiVersion = "1.12.3"
+    commonsLangVersion = "3.11"
+    commonsIOVersion = "2.8.0"
+    httpClientVersion = "4.5.12"
+    logbackVersion = "1.2.3"
+    lombokVersion = "1.18.16"
+    junitVersion = "5.7.0"
+    mockitoVersion = "3.5.11"
+}
+
+allprojects { ->
+    apply plugin: "java"
+    apply plugin: "idea"
+
+    sourceCompatibility = 1.11
+    targetCompatibility = 1.11
+
+    idea {
+        module {
+            downloadJavadoc = true
+            downloadSources = true
+        }
+    }
+
+    repositories {
+        mavenCentral()
+        maven {
+            url "http://maven.xwiki.org/releases"
+        }
+        maven {
+            url "http://maven.xwiki.org/externals"
+        }
+    }
+
+    dependencies {
+        implementation "com.google.code.findbugs:jsr305:$fingBugsVersion"
+
+        // Testing
+        testImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
+        testImplementation "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
+        testImplementation "org.junit.jupiter:junit-jupiter-params:$junitVersion"
+        testImplementation "org.mockito:mockito-junit-jupiter:$mockitoVersion"
+    }
+
+    jar {
+        archiveFileName = "${project.name}.jar"
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+}
+
+clean {
+    delete fileTree(dir: "${project.rootDir}/plugins", include: "*.jar").files
+}

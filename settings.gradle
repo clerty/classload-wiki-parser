@@ -1,0 +1,6 @@
+rootProject.name = 'homework1'
+
+include "main-module"
+include "plugin-interface"
+include "frequency-dictionary-plugin"
+include "counter-plugin"

@@ -1,0 +1,36 @@
+dependencies {
+    implementation project(":plugin-interface")
+    // Common dependencies
+    implementation "org.apache.commons:commons-lang3:$commonsLangVersion"
+    implementation "commons-io:commons-io:$commonsIOVersion"
+    implementation "com.google.guava:guava:$guavaVersion"
+    implementation "org.xwiki.commons:xwiki-commons-component-default:$xwikiVersion"
+    implementation "org.xwiki.rendering:xwiki-rendering-syntax-plain:$xwikiVersion"
+    implementation "org.xwiki.contrib.mediawiki:mediawiki-syntax:$xwikiMediaWikiVersion"
+    // JSON parser
+    implementation "com.google.code.gson:gson:$gsonVersion"
+    // HTTP client
+    implementation "org.apache.httpcomponents:httpclient:$httpClientVersion"
+    // Logging
+    implementation "ch.qos.logback:logback-classic:$logbackVersion"
+    // Lombok
+    implementation "org.projectlombok:lombok:$lombokVersion"
+    annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+}
+
+jar {
+    manifest {
+        attributes(
+            "Main-Class": "ru.digitalhabbits.homework1.Homework",
+            "Class-Path": configurations.runtimeClasspath.collect { it.absolutePath }.join(" ")
+        )
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+jar.dependsOn([
+        ":frequency-dictionary-plugin:build",
+        ":counter-plugin:build"
+])
